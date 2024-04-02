@@ -1,0 +1,7 @@
+{%extends "auctions/layout.html"%} {%block body%}
+<h1>{{listing.title}}</h1>
+TODO: add the correct details once this is finished
+<h2>Comemnts</h2>
+{%for comment in comments%} {{comment.text}} {%endfor%}
+<a href="{%url 'index'%}">All listings</a>
+{%endblock%}

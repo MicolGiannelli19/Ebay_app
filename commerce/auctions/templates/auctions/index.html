@@ -1,7 +1,16 @@
-{% extends "auctions/layout.html" %}
-
-{% block body %}
-    <h2>Active Listings</h2>
-
-    TODO
+{% extends "auctions/layout.html" %} {% block body %}
+<h2>Active Listings</h2>
+<ul>
+  <!-- make the first bit into a link to each listing page -->
+  <!-- <a>{{ listing.title }}</a>
+    <span>by {{ listing.seller }}</span>
+    <span>for {{ listing.price }}</span> -->
+  {% for listing in listings %}
+  <li>
+    <h2><a href="{% url 'listing' listing.id%}">{{listing.title}} </a></h2>
+    <p>{{listing.description}}</p>
+    <p>Starting bid: £{{listing.starting_bid}}</p>
+  </li>
+  {% endfor %}
+</ul>
 {% endblock %}
