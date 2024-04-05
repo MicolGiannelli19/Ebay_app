@@ -1,12 +1,23 @@
 {%extends "auctions/layout.html"%} {%block body%}
-<h1>{{listing.title}}</h1>
-TODO: add the correct details once this is finished
+
+<div
+  name="displayed_listing"
+  style="margin: 10px; padding: 10px; border: 1px solid black"
+>
+  <h1>{{listing.title}}</h1>
+  <img src="{{listing.image}}" alt="image" />
+  <p>{{listing.description}}</p>
+  <p>Starting bid: £{{listing.starting_bid}}</p>
+</div>
+a TODO: add the correct details once this is finished
+<br />
 <h2>Comemnts</h2>
 {%for comment in comments%}
 <div style="margin: 10px; padding: 10px; border: 1px solid black">
   <p>{{comment.user}}</p>
   <p>{{comment.text}}</p>
 </div>
+
 {%endfor%}
 <form action="{%url 'comment' listing_id=listing.id%}" method="post">
   {% csrf_token %}

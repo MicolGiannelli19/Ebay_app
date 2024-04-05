@@ -13,6 +13,10 @@ from django import forms
 from .models import User, Listing, Comment, Bid
 
 
+def profile(request):
+    return render(request, "auctions/profile.html", {"user": request.user})
+
+
 def index(request):
     return render(request, "auctions/index.html", {"listings": Listing.objects.all()})
 
@@ -33,6 +37,7 @@ class ListingForm(forms.ModelForm):
         fields = ["title", "description", "starting_bid", "image", "category"]
 
 
+@login_required()
 def new_listing(request):
     if request.method == "POST":
         form = ListingForm(request.POST)
