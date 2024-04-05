@@ -40,9 +40,6 @@ class ListingForm(forms.ModelForm):
             "starting_bid",
             "image",
             "category",
-            "user",
-            "intrested_users",
-            "active",
         ]
 
 
@@ -153,7 +150,7 @@ def watchlist(request, listing_id):
         listing = Listing.objects.get(id=listing_id)
         user = request.user
         user.watchlist.add(listing)
-    return HttpResponseRedirect(reverse("listing", args=(listing_id,)))
+    return HttpResponseRedirect(reverse("index"))
 
 
 # TODO: change it to be a django form

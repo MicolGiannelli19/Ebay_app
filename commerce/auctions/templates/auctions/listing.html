@@ -5,9 +5,22 @@
   style="margin: 10px; padding: 10px; border: 1px solid black"
 >
   <h1>{{listing.title}}</h1>
-  <img src="{{listing.image}}" alt="image" />
+  <h2>posted by: @{{listing.user}}</h2>
+  <img
+    src="{{listing.image}}"
+    alt="image"
+    style="width: 300px; height: 200px"
+  />
   <p>{{listing.description}}</p>
   <p>Starting bid: £{{listing.starting_bid}}</p>
+  <button
+    method="post"
+    action="{%url 'watchlist' listing_id=listing.id%}"
+  ></button>
+  <form method="post" action="{%url 'watchlist' listing_id=listing.id%}">
+    {% csrf_token %}
+    <input type="submit" value="Add to watchlist" />
+  </form>
 </div>
 a TODO: add the correct details once this is finished
 <br />

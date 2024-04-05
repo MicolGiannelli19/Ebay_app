@@ -15,7 +15,10 @@ class Listing(models.Model):
     image = models.URLField(blank=True)
     category = models.CharField(max_length=64, blank=True)
     user = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="listings", blank=True
+        User,
+        on_delete=models.DO_NOTHING,
+        related_name="listings",
+        blank=True,
     )
     active = models.BooleanField(default=True)
     intrested_users = models.ManyToManyField(User, blank=True, related_name="watchlist")
