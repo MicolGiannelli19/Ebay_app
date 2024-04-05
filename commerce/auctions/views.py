@@ -34,7 +34,16 @@ def index(request):
 class ListingForm(forms.ModelForm):
     class Meta:
         model = Listing
-        fields = ["title", "description", "starting_bid", "image", "category"]
+        fields = [
+            "title",
+            "description",
+            "starting_bid",
+            "image",
+            "category",
+            "user",
+            "intrested_users",
+            "active",
+        ]
 
 
 @login_required()
@@ -48,12 +57,15 @@ def new_listing(request):
             starting_bid = form.cleaned_data["starting_bid"]
             image = form.cleaned_data["image"]
             category = form.cleaned_data["category"]
+            user = request.user
             listing = Listing(
                 title=title,
                 description=description,
                 starting_bid=starting_bid,
                 image=image,
                 category=category,
+                user=user,
+                active=True,
             )
             listing.save()
             return HttpResponseRedirect(reverse("index"))
@@ -133,6 +145,15 @@ def listing(request, listing_id):
         "auctions/listing.html",
         {"listing": listing, "comments": comments, "bids": bids},
     )
+
+
+@login_required()
+def watchlist(request, listing_id):
+    if request.method == "POST":
+        listing = Listing.objects.get(id=listing_id)
+        user = request.user
+        user.watchlist.add(listing)
+    return HttpResponseRedirect(reverse("listing", args=(listing_id,)))
 
 
 # TODO: change it to be a django form
