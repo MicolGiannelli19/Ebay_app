@@ -1,14 +1,66 @@
+# authetification inports
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 
-from .models import User, Listing
+from django import forms
+
+# Model imports
+from .models import User, Listing, Comment, Bid
 
 
 def index(request):
     return render(request, "auctions/index.html", {"listings": Listing.objects.all()})
+
+
+#  NOTE sure what method is best probably the one bellow
+
+# class ListingForm(forms.Form):
+#     title = forms.CharField(label="Title")
+#     description = forms.CharField(label="Description")
+#     starting_bid = forms.DecimalField(label="Starting Bid")
+#     image_url = forms.URLField(label="Image URL", required=False)
+#     category = forms.CharField(label="Category", required=False)
+
+
+class ListingForm(forms.ModelForm):
+    class Meta:
+        model = Listing
+        fields = ["title", "description", "starting_bid", "image", "category"]
+
+
+def create_listing(request):
+    if request.method == "POST":
+        form = ListingForm(request.POST)
+        if form.is_valid():
+            # TODO: look up the model forms to do this more efficently
+            title = form.cleaned_data["title"]
+            description = form.cleaned_data["description"]
+            starting_bid = form.cleaned_data["starting_bid"]
+            image = form.cleaned_data["image"]
+            category = form.cleaned_data["category"]
+            listing = Listing(
+                title=title,
+                description=description,
+                starting_bid=starting_bid,
+                image=image,
+                category=category,
+            )
+            listing.save()
+            return HttpResponseRedirect(reverse("index"))
+        else:
+            return render(
+                request,
+                "auctions/create_listing.html",
+                {"form": form, "message": "Invalid form data"},
+            )
+    else:
+        form = ListingForm()
+        return render(request, "auctions/create_listing.html", {"form": form})
 
 
 def login_view(request):
@@ -76,3 +128,17 @@ def listing(request, listing_id):
         "auctions/listing.html",
         {"listing": listing, "comments": comments, "bids": bids},
     )
+
+
+# TODO: change it to be a django form
+@login_required()
+def comment(request, listing_id):
+    if request.method == "POST":
+        user = request.user
+        listing = Listing.objects.get(id=listing_id)
+        text = request.POST["comment"]
+        comment = Comment(user=user, listing=listing, text=text)
+        comment.save()
+        return HttpResponseRedirect(reverse("listing", args=(listing_id,)))
+    else:
+        return HttpResponseRedirect(reverse("listing", args=(listing_id,)))

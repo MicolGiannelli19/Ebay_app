@@ -1,10 +1,8 @@
 {% extends "auctions/layout.html" %} {% block body %}
-<h2>Active Listings</h2>
+
+<h2 name="micla">Active Listings</h2>
+<p>does this not show up</p>
 <ul>
-  <!-- make the first bit into a link to each listing page -->
-  <!-- <a>{{ listing.title }}</a>
-    <span>by {{ listing.seller }}</span>
-    <span>for {{ listing.price }}</span> -->
   {% for listing in listings %}
   <li>
     <h2><a href="{% url 'listing' listing.id%}">{{listing.title}} </a></h2>

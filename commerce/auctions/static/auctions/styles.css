@@ -1,3 +1,16 @@
 body {
     padding: 10px;
+
 }
+.micla{
+    color: red;
+    background-color: green;
+}
+
+.comment {
+    margin: 10px;
+    padding: 10px;
+    border: 1px solid black;
+}
+
+/* change the font */
