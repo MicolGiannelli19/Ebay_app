@@ -1,13 +1,17 @@
 {%extends "auctions/layout.html"%} {%block body%}
-<h1>New Lisitng</h1>
+<h1>Profile</h1>
 
-TODO: add the if messagee bit here
+<p>user: {{user.username}}</p>
+<p>email: {{user.email}}</p>
+<p>date joined: {{user.date_joined}}</p>
 
-<form action="{%url 'new_listing'}" method="post">
-  {% csrf_token %}{{form.as_p}}
-  <input type="submit" value="Submit" />
-</form>
+TODO: insert profile picture link, how do photos with drag adn drop thing work?
+where are thy stored? TODO: shoud make each of these into a menu you can open
 
-<a href="{%url 'index'%}">All listings</a>
+<h2>Watchlist</h2>
 
-{%endblock%}
+<h2>My active listings</h2>
+{{user.listings}}
+
+<h2>My bids</h2>
+{{user.bids}} {%endblock%}

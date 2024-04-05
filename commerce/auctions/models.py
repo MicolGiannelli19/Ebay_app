@@ -14,9 +14,11 @@ class Listing(models.Model):
     starting_bid = models.DecimalField(max_digits=10, decimal_places=2)
     image = models.URLField(blank=True)
     category = models.CharField(max_length=64, blank=True)
-    # TODO: add in other parameters
-    # user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="listings")
-    # active = models.BooleanField(default=True)
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="listings", blank=True
+    )
+    active = models.BooleanField(default=True)
+    intrested_users = models.ManyToManyField(User, blank=True, related_name="watchlist")
 
 
 class Bid(models.Model):
