@@ -1,0 +1,21 @@
+{%extends "auctions/layout.html"%} {%block body%}
+<h1>New Lisitng</h1>
+
+<h2>Comemnts</h2>
+{%for comment in comments%}
+<div style="margin: 10px; padding: 10px; border: 1px solid black">
+  <p>{{comment.user}}</p>
+  <p>{{comment.text}}</p>
+</div>
+{%endfor%}
+<form action="{%url 'comment' listing_id=listing.id%}" method="post">
+  {% csrf_token %}
+  <textarea
+    name="comment"
+    id="comment"
+    placeholder="Insert your comment"
+  ></textarea>
+  <input type="submit" value="Submit" />
+</form>
+<a href="{%url 'index'%}">All listings</a>
+{%endblock%}

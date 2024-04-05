@@ -33,7 +33,7 @@ class ListingForm(forms.ModelForm):
         fields = ["title", "description", "starting_bid", "image", "category"]
 
 
-def create_listing(request):
+def new_listing(request):
     if request.method == "POST":
         form = ListingForm(request.POST)
         if form.is_valid():
@@ -55,12 +55,12 @@ def create_listing(request):
         else:
             return render(
                 request,
-                "auctions/create_listing.html",
+                "auctions/new_listing.html",
                 {"form": form, "message": "Invalid form data"},
             )
     else:
         form = ListingForm()
-        return render(request, "auctions/create_listing.html", {"form": form})
+        return render(request, "auctions/new_listing.html", {"form": form})
 
 
 def login_view(request):
