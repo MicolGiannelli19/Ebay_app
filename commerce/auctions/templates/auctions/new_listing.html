@@ -1,7 +1,7 @@
 {%extends "auctions/layout.html"%} {%block body%}
 <h1>New Lisitng</h1>
 
-TODO: add the if messagee bit here
+TODO: add the if messagee bit here TODO: add if user signed in bit here
 
 <form action="{%url 'new_listing'%}" method="post">
   {% csrf_token %}{{form.as_p}}

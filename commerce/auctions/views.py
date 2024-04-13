@@ -9,12 +9,17 @@ from django.urls import reverse
 
 from django import forms
 
+# TODO: find out where to put error handling if user is not logged in
 # Model imports
 from .models import User, Listing, Comment, Bid
 
 
 def profile(request):
-    return render(request, "auctions/profile.html", {"user": request.user})
+    return render(
+        request,
+        "auctions/profile.html",
+        {"user": request.user, "watchlist": request.user.watchlist.all()},
+    )
 
 
 def index(request):
@@ -149,7 +154,10 @@ def watchlist(request, listing_id):
     if request.method == "POST":
         listing = Listing.objects.get(id=listing_id)
         user = request.user
+        if user.watchlist.filter(id=listing_id).exists():
+            user.watchlist.remove(listing)
         user.watchlist.add(listing)
+    # TODO: this is wrong should stay on the same page
     return HttpResponseRedirect(reverse("index"))
 
 
