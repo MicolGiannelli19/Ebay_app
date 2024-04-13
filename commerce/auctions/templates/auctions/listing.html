@@ -13,9 +13,6 @@
   />
   <p>{{listing.description}}</p>
   <p>Starting bid: £{{listing.starting_bid}}</p>
-  <button method="post" action="{%url 'watchlist' listing_id=listing.id%}">
-    watchlist
-  </button>
   <form method="post" action="{%url 'watchlist' listing_id=listing.id%}">
     {% csrf_token %}
     <input type="submit" value="Add to watchlist" />
