@@ -9,7 +9,30 @@ TODO: insert profile picture link, how do photos with drag adn drop thing work?
 where are thy stored? TODO: shoud make each of these into a menu you can open
 
 <h2>Watchlist</h2>
-<p>{{watchlist}}</p>
+<div style="display: flex; flex-direction: row; justify-content: flex-start">
+  {%for element in watchlist%}
+  <div
+    style="
+      margin: 10px;
+      padding: 10px;
+      border: 1px solid black;
+      width: 200px;
+      height: 200px;
+    "
+  >
+    <h2><a href="{% url 'listing' element.id%}">{{element.title}} </a></h2>
+    {%if element.active%}
+    <img
+      src="{{element.image}}"
+      alt="picture of {{elemnt.title}}"
+      style="width: 100px; height: 80px"
+    />
+    {%else%}
+    <h2>CLOSED</h2>
+    {%endif%}
+  </div>
+  {%endfor%}
+</div>
 
 <h2>My active listings</h2>
 {{user.listings}}

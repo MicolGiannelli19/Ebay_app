@@ -13,10 +13,25 @@
   />
   <p>{{listing.description}}</p>
   <p>Starting bid: £{{listing.starting_bid}}</p>
+  <p>CHANGE STYLE SO IT IS CLEAR IF IS WATCHLISTED OR NOT</p>
   <form method="post" action="{%url 'watchlist' listing_id=listing.id%}">
     {% csrf_token %}
     <input type="submit" value="Add to watchlist" />
   </form>
+
+  <p>Add an if statmet so you can only see these two if you are the user</p>
+  {%if user == listing.user%}
+  <form method="post" action="{%url 'watchlist' listing_id=listing.id%}">
+    {% csrf_token %}
+    <input type="submit" value="Edit" />
+  </form>
+
+  <form method="post" action="{%url 'close' listing_id=listing.id%}">
+    {% csrf_token %}
+    <input type="submit" value="Close" />
+  </form>
+
+  {%endif%}
 </div>
 a TODO: add the correct details once this is finished
 <br />

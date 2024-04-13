@@ -26,16 +26,6 @@ def index(request):
     return render(request, "auctions/index.html", {"listings": Listing.objects.all()})
 
 
-#  NOTE sure what method is best probably the one bellow
-
-# class ListingForm(forms.Form):
-#     title = forms.CharField(label="Title")
-#     description = forms.CharField(label="Description")
-#     starting_bid = forms.DecimalField(label="Starting Bid")
-#     image_url = forms.URLField(label="Image URL", required=False)
-#     category = forms.CharField(label="Category", required=False)
-
-
 class ListingForm(forms.ModelForm):
     class Meta:
         model = Listing
@@ -158,7 +148,7 @@ def watchlist(request, listing_id):
             user.watchlist.remove(listing)
         user.watchlist.add(listing)
     # TODO: this is wrong should stay on the same page
-    return HttpResponseRedirect(reverse("index"))
+    return HttpResponseRedirect(reverse("listing", args=(listing_id,)))
 
 
 # TODO: change it to be a django form
@@ -173,3 +163,13 @@ def comment(request, listing_id):
         return HttpResponseRedirect(reverse("listing", args=(listing_id,)))
     else:
         return HttpResponseRedirect(reverse("listing", args=(listing_id,)))
+
+
+def close(request, listing_id):
+    if request.method == "POST":
+        if request.user != Listing.objects.get(id=listing_id).user:
+            return HttpResponse("ERROR: Cannot close listing, you are not the owner!!")
+        listing = Listing.objects.get(id=listing_id)
+        listing.active = False
+        listing.save()
+    return HttpResponseRedirect(reverse("listing", args=(listing_id,)))

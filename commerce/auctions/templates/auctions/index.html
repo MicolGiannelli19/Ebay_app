@@ -1,15 +1,14 @@
 {% extends "auctions/layout.html" %} {% block body %}
 
 <h2 name="micla">Active Listings</h2>
-<p>does this not show up</p>
 <ul>
-  {% for listing in listings %}
+  {% for listing in listings %} {% if listing.active %}
   <li>
     <h2><a href="{% url 'listing' listing.id%}">{{listing.title}} </a></h2>
     <p>{{listing.description}}</p>
     <p>Starting bid: £{{listing.starting_bid}}</p>
   </li>
-  {% endfor %}
+  {% endif %} {% endfor %}
 </ul>
 
 TODO: change this link to be under profile my listings
