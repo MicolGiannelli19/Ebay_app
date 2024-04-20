@@ -22,8 +22,19 @@ def profile(request):
     )
 
 
+class BidForm(forms.ModelForm):
+    class Meta:
+        model = Bid
+        fields = ["amount"]
+
+
 def index(request):
-    return render(request, "auctions/index.html", {"listings": Listing.objects.all()})
+    message = request.GET.get("message", "")
+    return render(
+        request,
+        "auctions/index.html",
+        {"listings": Listing.objects.all(), "message": message},
+    )
 
 
 class ListingForm(forms.ModelForm):
@@ -131,11 +142,18 @@ def register(request):
 def listing(request, listing_id):
     listing = Listing.objects.get(id=listing_id)
     comments = listing.comments.all()
-    bids = listing.bids.all()
+    bid = listing.bids.all().last()
+    message = request.GET.get("message", "")
     return render(
         request,
         "auctions/listing.html",
-        {"listing": listing, "comments": comments, "bids": bids},
+        {
+            "listing": listing,
+            "message": message,
+            "comments": comments,
+            "highest_bid": bid,
+            "bid_form": BidForm(),
+        },
     )
 
 
@@ -146,12 +164,41 @@ def watchlist(request, listing_id):
         user = request.user
         if user.watchlist.filter(id=listing_id).exists():
             user.watchlist.remove(listing)
-        user.watchlist.add(listing)
-    # TODO: this is wrong should stay on the same page
-    return HttpResponseRedirect(reverse("listing", args=(listing_id,)))
+            message = "Removed from watchlist"
+        else:
+            message = "Added to watchlist"
+            user.watchlist.add(listing)
+
+        new_url = reverse("listing", args=(listing_id,))
+        return HttpResponseRedirect(new_url + "?message=" + message)
+    else:
+        return HttpResponseRedirect(
+            reverse("listing", args=(listing_id,)) + "?message=Invalid request"
+        )
 
 
-# TODO: change it to be a django form
+def bid(request, listing_id):
+    if request.method == "POST":
+        form = BidForm(request.POST)
+        if form.is_valid():
+            amount = form.cleaned_data["amount"]
+            user = request.user
+            listing = Listing.objects.get(id=listing_id)
+            if listing.bids.all().count() > 0:
+                current_bid = listing.bids.all().last().amount
+            else:
+                current_bid = listing.starting_bid
+            if amount > current_bid:
+                bid = Bid(amount=amount, user=user, listing=listing)
+                bid.save()
+                return HttpResponseRedirect(
+                    reverse("listing", args=(listing_id,)) + "?message=Bid added"
+                )
+    return HttpResponseRedirect(
+        reverse("listing", args=(listing_id,)) + "?message=Invalid request"
+    )
+
+
 @login_required()
 def comment(request, listing_id):
     if request.method == "POST":
@@ -160,9 +207,13 @@ def comment(request, listing_id):
         text = request.POST["comment"]
         comment = Comment(user=user, listing=listing, text=text)
         comment.save()
-        return HttpResponseRedirect(reverse("listing", args=(listing_id,)))
+        return HttpResponseRedirect(
+            reverse("listing", args=(listing_id,)) + "?message=Comment added"
+        )
     else:
-        return HttpResponseRedirect(reverse("listing", args=(listing_id,)))
+        return HttpResponseRedirect(
+            reverse("listing", args=(listing_id,)) + "?message=Invalid form data"
+        )
 
 
 def close(request, listing_id):

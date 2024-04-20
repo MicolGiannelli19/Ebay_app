@@ -4,6 +4,9 @@
   name="displayed_listing"
   style="margin: 10px; padding: 10px; border: 1px solid black"
 >
+  {%if message%}
+  <p>{{message}}</p>
+  {%endif%}
   <h1>{{listing.title}}</h1>
   <h2>posted by: @{{listing.user}}</h2>
   <img
@@ -13,15 +16,30 @@
   />
   <p>{{listing.description}}</p>
   <p>Starting bid: £{{listing.starting_bid}}</p>
-  <p>CHANGE STYLE SO IT IS CLEAR IF IS WATCHLISTED OR NOT</p>
+  {%if highest_bid%}
+  <p>Current bid: £{{highest_bid.amount}} by user {{highest_bid.user}}</p>
+  {%else%}
+  <p>No bids have been made</p>
+  {%endif%}
+  <form action="{%url 'bid' listing_id=listing.id%}" method="post">
+    {% csrf_token %} {{bid_form.as_p}}
+    <input type="submit" value="Bid" />
+  </form>
+  {%if listing in user.watchlist.all%}
   <form method="post" action="{%url 'watchlist' listing_id=listing.id%}">
     {% csrf_token %}
     <input type="submit" value="Add to watchlist" />
   </form>
+  {%else%}
+  <form method="post" action="{%url 'watchlist' listing_id=listing.id%}">
+    {% csrf_token %}
+    <input type="submit" value="Remove from watchlist" />
+  </form>
+  {%endif%}
 
   <p>Add an if statmet so you can only see these two if you are the user</p>
   {%if user == listing.user%}
-  <form method="post" action="{%url 'watchlist' listing_id=listing.id%}">
+  <form method="post" action="{%url 'listing' listing_id=listing.id%}">
     {% csrf_token %}
     <input type="submit" value="Edit" />
   </form>

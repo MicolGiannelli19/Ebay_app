@@ -1,6 +1,9 @@
 {% extends "auctions/layout.html" %} {% block body %}
 
 <h2 name="micla">Active Listings</h2>
+{% if message %}
+<div>{{ message }}</div>
+{% endif %}
 <ul>
   {% for listing in listings %} {% if listing.active %}
   <li>
@@ -10,7 +13,5 @@
   </li>
   {% endif %} {% endfor %}
 </ul>
-
-TODO: change this link to be under profile my listings
 <a href="{%url 'new_listing'%}">Add new Listing</a>
 {% endblock %}
