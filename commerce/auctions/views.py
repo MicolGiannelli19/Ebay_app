@@ -18,7 +18,12 @@ def profile(request):
     return render(
         request,
         "auctions/profile.html",
-        {"user": request.user, "watchlist": request.user.watchlist.all()},
+        {
+            "user": request.user,
+            "watchlist": request.user.watchlist.all(),
+            "bids": request.user.bids.all(),
+            "listings": request.user.listings.all(),
+        },
     )
 
 

@@ -1,32 +1,30 @@
 {%extends "auctions/layout.html"%} {%block body%}
 <h1>Profile</h1>
 
-<p>user: {{user.username}}</p>
-<p>email: {{user.email}}</p>
-<p>date joined: {{user.date_joined}}</p>
-
-TODO: insert profile picture link, how do photos with drag adn drop thing work?
-where are thy stored? TODO: shoud make each of these into a menu you can open
+<div
+  class="profile-contianer"
+  style="
+    background-color: yellow;
+    display: flex;
+    align-items: center;
+    width: 100%;
+  "
+>
+  <img src="{{user.image}}" alt="" />
+  <div id="info">
+    <h1>user: {{user.username}}</h1>
+    <p>email: {{user.email}}</p>
+    <p>date joined: {{user.date_joined}}</p>
+  </div>
+</div>
 
 <h2>Watchlist</h2>
-<div style="display: flex; flex-direction: row; justify-content: flex-start">
+<div class="row-container">
   {%for element in watchlist%}
-  <div
-    style="
-      margin: 10px;
-      padding: 10px;
-      border: 1px solid black;
-      width: 200px;
-      height: 200px;
-    "
-  >
+  <div class="listing-element-small">
     <h2><a href="{% url 'listing' element.id%}">{{element.title}} </a></h2>
     {%if element.active%}
-    <img
-      src="{{element.image}}"
-      alt="picture of {{elemnt.title}}"
-      style="width: 100px; height: 80px"
-    />
+    <img src="{{element.image}}" alt="picture of {{elemnt.title}}" />
     {%else%}
     <h2>CLOSED</h2>
     {%endif%}
@@ -35,10 +33,25 @@ where are thy stored? TODO: shoud make each of these into a menu you can open
 </div>
 
 <h2>My active listings</h2>
-{{user.listings}}
+
+<div class="row-container">
+  {%for element in listings%} {%if element.active%}
+  <div class="listing-element-small">
+    <h2><a href="{% url 'listing' element.id%}">{{element.title}}</a></h2>
+    <img src="{{element.image}}" alt="picture of {{elemnt.title}}" />
+  </div>
+  {%endif%} {%endfor%}
+</div>
 
 <h2>My bids</h2>
-{{user.bids}}
-
-<h2>Comments</h2>
-{{user.comments}} {%endblock%}
+{%for bid in bids%}
+<div class="row-container">
+  <div class="listing-element-small">
+    <h2>
+      <a href="{% url 'listing' bid.listing.id%}">{{bid.listing.title}}</a>
+    </h2>
+    <img src="{{bid.listing.image}}" alt="picture of {{bid.listing.title}}" />
+    <p>my bid: {{bid.amount}}</p>
+  </div>
+</div>
+{%endfor%} {%endblock%}

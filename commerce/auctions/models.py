@@ -5,7 +5,13 @@ from django.db import models
 # TODO: look up Abstract user Baseclass
 # Find out how to edit database
 class User(AbstractUser):
-    pass
+    image = models.URLField(
+        blank=True,
+        default="https://powerusers.microsoft.com/t5/image/serverpage/image-id/98171iCC9A58CAF1C9B5B9/image-size/large/is-moderation-mode/true?v=v2&px=999",
+    )
+
+    def __str__(self):
+        return f"{self.username} - {self.email}"
 
 
 class Listing(models.Model):
