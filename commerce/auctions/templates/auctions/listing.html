@@ -28,12 +28,12 @@
   {%if listing in user.watchlist.all%}
   <form method="post" action="{%url 'watchlist' listing_id=listing.id%}">
     {% csrf_token %}
-    <input type="submit" value="Add to watchlist" />
+    <input type="submit" value="Remove from watchlist" />
   </form>
   {%else%}
   <form method="post" action="{%url 'watchlist' listing_id=listing.id%}">
     {% csrf_token %}
-    <input type="submit" value="Remove from watchlist" />
+    <input type="submit" value="Add to watchlist" />
   </form>
   {%endif%}
 

@@ -12,4 +12,38 @@ body {
     border: 1px solid black;
 }
 
+.profile-container {
+    background-color: yellow;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 50px;
+  }
+
+.profile-container img {
+    margin-left: 10%;
+    margin-right: 10%;
+    border: 10px solid black;
+    border-radius: 50%;
+    overflow: hidden;
+}
+.listing-element-small{
+    margin: 10px;
+    padding: 10px;
+    border: 1px solid black;
+    width: 200px;
+    height: 200px;
+}
+.listing-element-small img{
+    width: 150px; 
+    height: 80px;
+}
+.row-container{
+    display: flex; 
+    flex-direction: row; 
+    overflow-x: scroll; 
+    justify-content: flex-start;
+    margin-bottom: 30px;
+    margin-top: 10px;
+}
 /* change the font */
