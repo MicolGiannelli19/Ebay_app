@@ -14,6 +14,9 @@ from django import forms
 from .models import User, Listing, Comment, Bid
 
 
+
+# Models defenitions
+
 def profile(request):
     return render(
         request,
@@ -44,13 +47,7 @@ class ListingForm(forms.ModelForm):
         ]
 
 
-def index(request):
-    message = request.GET.get("message", "")
-    return render(
-        request,
-        "auctions/index.html",
-        {"listings": Listing.objects.all(), "message": message},
-    )
+# User Managment 
 
 def login_view(request):
     if request.method == "POST":
@@ -107,6 +104,15 @@ def register(request):
     else:
         return render(request, "auctions/register.html")
 
+#  Basic Functionality views 
+
+def index(request):
+    message = request.GET.get("message", "")
+    return render(
+        request,
+        "auctions/index.html",
+        {"listings": Listing.objects.all(), "message": message},
+    )
 
 def listing(request, listing_id):
     listing = Listing.objects.get(id=listing_id)
@@ -125,6 +131,9 @@ def listing(request, listing_id):
         },
     )
 
+
+
+# Actions that can be Made to a listing
 
 @login_required()
 def watchlist(request, listing_id):
@@ -146,6 +155,7 @@ def watchlist(request, listing_id):
         )
 
 
+@login_required()
 def bid(request, listing_id):
     if request.method == "POST":
         form = BidForm(request.POST)
@@ -219,6 +229,8 @@ def new_listing(request):
         form = ListingForm()
         return render(request, "auctions/new_listing.html", {"form": form})
 
+
+# Changes to personal active listing
 @login_required()
 def edit(request, listing_id):
     # NOTE: Bettrer design for this would be making edit and new page call the same thing and submit it diffrently based on if it exists or not 
@@ -239,6 +251,7 @@ def edit(request, listing_id):
             request, "auctions/edit.html", {"listing_id": listing_id, "form": old_form}
         )
 
+@login_required()
 def close(request, listing_id):
     if request.method == "POST":
         if request.user != Listing.objects.get(id=listing_id).user:
