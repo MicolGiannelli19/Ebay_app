@@ -1,0 +1,9 @@
+{%extends "auctions/layout.html"%} {%block body%}
+<h1>Edit this listing</h1>
+<h1>{{listing_id}}</h1>
+<form method="post" action="{%url 'edit' listing_id=listing_id%}">
+    {% csrf_token %}
+    {{form.as_p}}
+    <input type="submit" value="Submit" />
+</form>
+{%endblock%}

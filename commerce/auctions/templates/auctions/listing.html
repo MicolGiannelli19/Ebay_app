@@ -44,11 +44,11 @@
 
   <!-- secontion for owener of th listing -->
   {%if user == listing.user%}
+  <p> Can I view this tag</p>
+  <a href="{%url 'edit' listing_id=listing.id%}">
+    <button>Micla</button>
+  </a>
   <p> check how I did this for the wiki page</p>
-  <form method="post" action="{%url 'listing' listing_id=listing.id%}">
-    {% csrf_token %}
-    <input type="submit" value="Edit" />
-  </form>
 
   <form method="post" action="{%url 'close' listing_id=listing.id%}">
     {% csrf_token %}

@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 
 from django import forms
@@ -87,6 +87,21 @@ def new_listing(request):
         form = ListingForm()
         return render(request, "auctions/new_listing.html", {"form": form})
 
+def edit(request, listing_id):
+    # NOTE: Bettrer design for this would be making edit and new page call the same thing and submit it diffrently based on if it exists or not 
+
+    # Take the newly submitted from and change the ingotmation in the database
+    if request.method == "POST":
+        return HttpResponse("design a suitable editing of the form here")
+        # return display_entery_page(request, title)
+
+    else:
+        listing_obj = Listing.objects.get(id=listing_id)
+        old_form = ListingForm(instance=listing_obj)
+        
+        return render(
+            request, "auctions/edit.html", {"listing_id": listing_id, "form": old_form}
+        )
 
 def login_view(request):
     if request.method == "POST":
