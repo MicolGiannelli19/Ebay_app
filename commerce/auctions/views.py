@@ -32,16 +32,6 @@ class BidForm(forms.ModelForm):
         model = Bid
         fields = ["amount"]
 
-
-def index(request):
-    message = request.GET.get("message", "")
-    return render(
-        request,
-        "auctions/index.html",
-        {"listings": Listing.objects.all(), "message": message},
-    )
-
-
 class ListingForm(forms.ModelForm):
     class Meta:
         model = Listing
@@ -54,54 +44,13 @@ class ListingForm(forms.ModelForm):
         ]
 
 
-@login_required()
-def new_listing(request):
-    if request.method == "POST":
-        form = ListingForm(request.POST)
-        if form.is_valid():
-            # TODO: look up the model forms to do this more efficently
-            title = form.cleaned_data["title"]
-            description = form.cleaned_data["description"]
-            starting_bid = form.cleaned_data["starting_bid"]
-            image = form.cleaned_data["image"]
-            category = form.cleaned_data["category"]
-            user = request.user
-            listing = Listing(
-                title=title,
-                description=description,
-                starting_bid=starting_bid,
-                image=image,
-                category=category,
-                user=user,
-                active=True,
-            )
-            listing.save()
-            return HttpResponseRedirect(reverse("index"))
-        else:
-            return render(
-                request,
-                "auctions/new_listing.html",
-                {"form": form, "message": "Invalid form data"},
-            )
-    else:
-        form = ListingForm()
-        return render(request, "auctions/new_listing.html", {"form": form})
-
-def edit(request, listing_id):
-    # NOTE: Bettrer design for this would be making edit and new page call the same thing and submit it diffrently based on if it exists or not 
-
-    # Take the newly submitted from and change the ingotmation in the database
-    if request.method == "POST":
-        return HttpResponse("design a suitable editing of the form here")
-        # return display_entery_page(request, title)
-
-    else:
-        listing_obj = Listing.objects.get(id=listing_id)
-        old_form = ListingForm(instance=listing_obj)
-        
-        return render(
-            request, "auctions/edit.html", {"listing_id": listing_id, "form": old_form}
-        )
+def index(request):
+    message = request.GET.get("message", "")
+    return render(
+        request,
+        "auctions/index.html",
+        {"listings": Listing.objects.all(), "message": message},
+    )
 
 def login_view(request):
     if request.method == "POST":
@@ -235,6 +184,60 @@ def comment(request, listing_id):
             reverse("listing", args=(listing_id,)) + "?message=Invalid form data"
         )
 
+
+
+@login_required()
+def new_listing(request):
+    if request.method == "POST":
+        form = ListingForm(request.POST)
+        if form.is_valid():
+            # TODO: look up the model forms to do this more efficently
+            title = form.cleaned_data["title"]
+            description = form.cleaned_data["description"]
+            starting_bid = form.cleaned_data["starting_bid"]
+            image = form.cleaned_data["image"]
+            category = form.cleaned_data["category"]
+            user = request.user
+            listing = Listing(
+                title=title,
+                description=description,
+                starting_bid=starting_bid,
+                image=image,
+                category=category,
+                user=user,
+                active=True,
+            )
+            listing.save()
+            return HttpResponseRedirect(reverse("index"))
+        else:
+            return render(
+                request,
+                "auctions/new_listing.html",
+                {"form": form, "message": "Invalid form data"},
+            )
+    else:
+        form = ListingForm()
+        return render(request, "auctions/new_listing.html", {"form": form})
+
+@login_required()
+def edit(request, listing_id):
+    # NOTE: Bettrer design for this would be making edit and new page call the same thing and submit it diffrently based on if it exists or not 
+
+    # Take the newly submitted from and change the ingotmation in the database
+    if request.method == "POST":
+        # form = ListingForm(request.POST)
+        # if form.is_valid():
+        #     form.save()
+        #     return HttpResponseRedirect(reverse("listing", args=(listing_id,)))
+        
+        return HttpResponse("form was not valid")
+    else:
+        listing_obj = Listing.objects.get(id=listing_id)
+        old_form = ListingForm(instance=listing_obj)
+        
+        return render(
+            request, "auctions/edit.html", {"listing_id": listing_id, "form": old_form}
+        )
 
 def close(request, listing_id):
     if request.method == "POST":
