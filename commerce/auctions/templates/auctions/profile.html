@@ -34,6 +34,8 @@
 
 <h2>My active listings</h2>
 
+<a href="{%url 'new_listing'%}">Add New Listing</a>
+
 <div class="row-container">
   {%for element in listings%} {%if element.active%}
   <div class="listing-element-small">

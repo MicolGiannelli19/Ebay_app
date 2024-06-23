@@ -14,18 +14,23 @@
     alt="image"
     style="width: 300px; height: 200px"
   />
+
   <p>{{listing.description}}</p>
   <p>Starting bid: £{{listing.starting_bid}}</p>
+
   {%if highest_bid%}
   <p>Current bid: £{{highest_bid.amount}} by user {{highest_bid.user}}</p>
   {%else%}
   <p>No bids have been made</p>
   {%endif%}
+
   <form action="{%url 'bid' listing_id=listing.id%}" method="post">
     {% csrf_token %} {{bid_form.as_p}}
     <input type="submit" value="Bid" />
   </form>
+
   {%if listing in user.watchlist.all%}
+
   <form method="post" action="{%url 'watchlist' listing_id=listing.id%}">
     {% csrf_token %}
     <input type="submit" value="Remove from watchlist" />
@@ -37,8 +42,9 @@
   </form>
   {%endif%}
 
-  <p>Add an if statmet so you can only see these two if you are the user</p>
+  <!-- secontion for owener of th listing -->
   {%if user == listing.user%}
+  <p> check how I did this for the wiki page</p>
   <form method="post" action="{%url 'listing' listing_id=listing.id%}">
     {% csrf_token %}
     <input type="submit" value="Edit" />
