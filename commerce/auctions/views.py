@@ -45,6 +45,8 @@ class ListingForm(forms.ModelForm):
             "image",
             "category",
         ]
+    def __str__():
+        return self.title
 
 
 # User Managment 
@@ -237,10 +239,24 @@ def edit(request, listing_id):
 
     # Take the newly submitted from and change the ingotmation in the database
     if request.method == "POST":
-        # form = ListingForm(request.POST)
-        # if form.is_valid():
-        #     form.save()
-        #     return HttpResponseRedirect(reverse("listing", args=(listing_id,)))
+        form = ListingForm(request.POST)
+        if form.is_valid():
+            # Get the form instance but don't save to the database yet
+            # TODO: get the old listing
+            listing = Listing.objects.get(id=listing_id)
+            
+            # Update only the fields that have changed
+            for field in form.changed_data:
+                if field != "title":
+                    print(field)
+                    setattr(listing, field, form.cleaned_data[field])
+            
+            # Ensure the user field is set
+            listing.user = request.user
+            listing.save()
+            # data_collected = form.cleaned_data
+            # other_option = form.clean()
+            return HttpResponseRedirect(reverse("listing", args=(listing_id,)))
         
         return HttpResponse("form was not valid")
     else:
