@@ -9,6 +9,49 @@ form {
     margin: 10px;
 }
 
+.message-popup {
+    background-color: #ffcccb; /* Light red background */
+    border: 2px solid #f44336; /* Red border */
+    color: #f44336; /* Red text */
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 5px;
+    position: relative;
+    animation: popin 0.5s ease-in-out;
+}
+
+.message-popup h1 {
+    margin: 0;
+    font-size: 24px;
+}
+
+.message-popup button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: #f44336;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 3px;
+}
+
+.message-popup button:hover {
+    background-color: #d32f2f; /* Darker red */
+}
+
+@keyframes popin {
+    from {
+        transform: scale(0.9);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
 .comment {
     margin: 10px;
     padding: 10px;

@@ -45,4 +45,21 @@
     <hr />
     {% block body %} {% endblock %}
   </body>
+  <script>
+    function fadeOutMessage() {
+    var messageContainer = document.getElementById('message-container');
+    var fadeEffect = setInterval(function () {
+        if (!messageContainer.style.opacity) {
+            messageContainer.style.opacity = 1;
+        }
+        if (messageContainer.style.opacity > 0) {
+            messageContainer.style.opacity -= 0.1;
+        } else {
+            clearInterval(fadeEffect);
+            messageContainer.style.display = 'none';
+        }
+    }, 50);
+}
+
+  </script>
 </html>

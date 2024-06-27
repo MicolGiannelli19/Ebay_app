@@ -4,9 +4,13 @@
   name="displayed_listing"
   style="margin: 10px; padding: 10px; border: 1px solid black"
 >
-  {%if message%}
-  <p>{{message}}</p>
-  {%endif%}
+{% if message %}
+<div id="message-container" class="message-popup">
+    <h1>{{ message }}</h1>
+    <button onclick="fadeOutMessage()">Close</button>
+</div>
+{% endif %}
+
   <h1>{{listing.title}}</h1>
   <h2>posted by: @{{listing.user}}</h2>
   <img
