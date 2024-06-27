@@ -1,5 +1,12 @@
 body {
     padding: 30px;
+
+}
+
+form {
+    border: solid black 1px;
+    padding: 10px;
+    margin: 10px;
 }
 
 .comment {
@@ -52,3 +59,7 @@ body {
     margin-top: 10px;
 }
 /* change the font */
+
+button {
+    margin: 10px;
+}

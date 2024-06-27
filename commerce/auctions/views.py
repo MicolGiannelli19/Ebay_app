@@ -34,6 +34,9 @@ class BidForm(forms.ModelForm):
     class Meta:
         model = Bid
         fields = ["amount"]
+        widgets = {
+        'amount': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Enter your bid'}),
+    }
 
 class ListingForm(forms.ModelForm):
     class Meta:
@@ -139,22 +142,17 @@ def listing(request, listing_id):
 
 @login_required()
 def watchlist(request, listing_id):
-    if request.method == "POST":
-        listing = Listing.objects.get(id=listing_id)
-        user = request.user
-        if user.watchlist.filter(id=listing_id).exists():
-            user.watchlist.remove(listing)
-            message = "Removed from watchlist"
-        else:
-            message = "Added to watchlist"
-            user.watchlist.add(listing)
-
-        new_url = reverse("listing", args=(listing_id,))
-        return HttpResponseRedirect(new_url + "?message=" + message)
+    # TODO: find out if its a requirement of the course fo this to be the 
+    listing = Listing.objects.get(id=listing_id)
+    user = request.user
+    if user.watchlist.filter(id=listing_id).exists():
+        user.watchlist.remove(listing)
+        message = "Removed from watchlist"
     else:
-        return HttpResponseRedirect(
-            reverse("listing", args=(listing_id,)) + "?message=Invalid request"
-        )
+        message = "Added to watchlist"
+        user.watchlist.add(listing)
+    new_url = reverse("listing", args=(listing_id,))
+    return HttpResponseRedirect(new_url + "?message=" + message)
 
 
 @login_required()
@@ -172,8 +170,9 @@ def bid(request, listing_id):
             if amount > current_bid:
                 bid = Bid(amount=amount, user=user, listing=listing)
                 bid.save()
+                new_url = reverse("listing", args=(listing_id,))
                 return HttpResponseRedirect(
-                    reverse("listing", args=(listing_id,)) + "?message=Bid added"
+                    new_url + "?message=" + "Bid added"
                 )
     return HttpResponseRedirect(
         reverse("listing", args=(listing_id,)) + "?message=Invalid request"
@@ -249,6 +248,7 @@ def edit(request, listing_id):
             for field in form.changed_data:
                 if field != "title":
                     print(field)
+                    # changes the value of the data for the listing object
                     setattr(listing, field, form.cleaned_data[field])
             
             # Ensure the user field is set
@@ -269,10 +269,9 @@ def edit(request, listing_id):
 
 @login_required()
 def close(request, listing_id):
-    if request.method == "POST":
-        if request.user != Listing.objects.get(id=listing_id).user:
-            return HttpResponse("ERROR: Cannot close listing, you are not the owner!!")
-        listing = Listing.objects.get(id=listing_id)
-        listing.active = False
-        listing.save()
-    return HttpResponseRedirect(reverse("listing", args=(listing_id,)))
+    if request.user != Listing.objects.get(id=listing_id).user:
+        return HttpResponse("ERROR: Cannot close listing, you are not the owner!!")
+    listing = Listing.objects.get(id=listing_id)
+    listing.active = False
+    listing.save()
+    return HttpResponseRedirect(reverse("index"))

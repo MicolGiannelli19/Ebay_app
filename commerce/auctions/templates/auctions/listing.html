@@ -26,39 +26,32 @@
 
   <form action="{%url 'bid' listing_id=listing.id%}" method="post">
     {% csrf_token %} {{bid_form.as_p}}
-    <input type="submit" value="Bid" />
+    <button type="submit">Bid</button>
   </form>
 
   {%if listing in user.watchlist.all%}
-
-  <form method="post" action="{%url 'watchlist' listing_id=listing.id%}">
-    {% csrf_token %}
-    <input type="submit" value="Remove from watchlist" />
-  </form>
+  <a href="{%url 'watchlist' listing_id=listing.id%}">
+    <button>Remove from watchlist</button>
+  </a>
   {%else%}
-  <form method="post" action="{%url 'watchlist' listing_id=listing.id%}">
-    {% csrf_token %}
-    <input type="submit" value="Add to watchlist" />
-  </form>
+  <a href="{%url 'watchlist' listing_id=listing.id%}">
+    <button>Watchlist</button>
+  </a>
   {%endif%}
 
   <!-- secontion for owener of th listing -->
   {%if user == listing.user%}
   <p> Can I view this tag</p>
   <a href="{%url 'edit' listing_id=listing.id%}">
-    <button>Micla</button>
+    <button>Edit</button>
   </a>
-  <p> check how I did this for the wiki page</p>
-
-  <form method="post" action="{%url 'close' listing_id=listing.id%}">
-    {% csrf_token %}
-    <input type="submit" value="Close" />
-  </form>
-
+  <a href="{%url 'close' listing_id=listing.id%}">
+    <button>Close</button>
+  </a>
   {%endif%}
 </div>
-a TODO: add the correct details once this is finished
-<br />
+
+<hr />
 <h2>Comemnts</h2>
 {%for comment in comments%}
 <div style="margin: 10px; padding: 10px; border: 1px solid black">
