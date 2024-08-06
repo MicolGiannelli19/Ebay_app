@@ -9,6 +9,8 @@
 <div>{{ message }}</div>
 {% endif %}
 
+ <h1>This should loop through the categories rather then the listings YOU can retrieve these in the view</h1>
+<h2>Altrenativly these could be a radio button</h2>
 <ul>
   {% for listing in listings %} 
   
@@ -19,5 +21,7 @@
   {% endif %}
   {% endfor %}
 </ul>
+
+<!-- -->
 
 {% endblock %}

@@ -123,6 +123,14 @@ def index(request):
         {"listings": Listing.objects.all(), "message": message},
     )
 
+def categories(request):
+    message = request.GET.get("message", "")
+    return render(
+        request,
+        "auctions/categories.html",
+        {"listings": Listing.objects.all(), "message": message},
+    )
+
 def listing(request, listing_id):
     listing = Listing.objects.get(id=listing_id)
     comments = listing.comments.all()

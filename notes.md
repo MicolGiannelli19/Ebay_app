@@ -26,3 +26,36 @@ Step By step guide to how I am writing Category migration
 1. Creating empty migration 
 
 `python manage.py makemigrations yourapp --empty`
+
+
+
+THIS IS AN EXAMPLE OF A RUNNABOE SCRIPT I MADE INSIDE AUCTIONS called script .py 
+
+```python
+import django
+import os
+
+# Set up Django settings
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'commerce.settings')
+django.setup()
+
+# Now you can import Django models
+from auctions.models import Listing
+
+print("Printing Lisings: \n")
+print(Listing.objects.all())
+
+
+current = Listing.objects.values_list('category', flat=True).distinct()
+print("categories")
+print(list(current))
+
+```
+
+that I run using:
+
+```BASH
+poetry run python -m auctions.script
+```
+
+I don't like the way this is done at all I think categories shoudl maybe be its own module 
