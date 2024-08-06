@@ -13,4 +13,5 @@ print(Listing.objects.all())
 
 
 current = Listing.objects.values_list('category', flat=True).distinct()
-print(current)
+print("categories")
+print(list(current))
