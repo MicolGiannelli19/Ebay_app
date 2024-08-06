@@ -15,6 +15,15 @@ class User(AbstractUser):
 
 
 class Listing(models.Model):
+    # CATEGORY_CHOICES = [
+    # ('Furniture', 'Furinture'),
+    # ('Clothes', 'Clothes'),
+    # ('Sports', 'Sports'),
+    # ('Toys', 'Toys'),
+    # ('Technology', 'Technology')
+    # ('Pet', 'Pet')
+    # ('Food', 'Food')
+    # ]
     title = models.CharField(max_length=64)
     description = models.TextField()
     starting_bid = models.DecimalField(max_digits=10, decimal_places=2)
