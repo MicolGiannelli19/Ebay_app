@@ -18,6 +18,9 @@ from .models import User, Listing, Comment, Bid
 # Models defenitions
 
 def profile(request):
+
+    """Funcion that returns indormation about the login user"""
+
     return render(
         request,
         "auctions/profile.html",
@@ -39,6 +42,7 @@ class BidForm(forms.ModelForm):
     }
 
 class ListingForm(forms.ModelForm):
+    # TODO: Check If you need to make changes to the form type once I fixed this
     class Meta:
         model = Listing
         fields = [
