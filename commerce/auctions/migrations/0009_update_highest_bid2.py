@@ -19,7 +19,7 @@ def update_highest_bid(apps, schema_editor):
 
 class Migration(migrations.Migration):
     dependencies = [
-        ('auctions', '0007_listing_highest_bid'),
+        ('auctions', '0008_update_highest_bid'),
     ]
 
     operations = [

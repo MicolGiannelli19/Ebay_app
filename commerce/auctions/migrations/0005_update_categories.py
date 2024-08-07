@@ -22,7 +22,6 @@ class Migration(migrations.Migration):
         ('auctions', '0004_user_image'),
     ]
 
-    # NOTE WHAT GOES HERE?
     operations = [
         migrations.RunPython(update_category_values),
     ]
