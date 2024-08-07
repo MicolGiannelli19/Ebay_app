@@ -199,13 +199,20 @@ def bid(request, listing_id):
             user = request.user
 
             listing = Listing.objects.get(id=listing_id)
+            
             if listing.bids.all().count() > 0:
                 current_bid = listing.bids.all().last().amount
+
             else:
                 current_bid = listing.starting_bid
             if amount > current_bid:
+
                 bid = Bid(amount=amount, user=user, listing=listing)
                 bid.save()
+
+                listing.highest_bid = amount
+                listing.save()
+
                 new_url = reverse("listing", args=(listing_id,))
                 return HttpResponseRedirect(
                     new_url + "?message=" + "Bid added"

@@ -40,6 +40,7 @@ class Listing(models.Model):
     )
     active = models.BooleanField(default=True)
     intrested_users = models.ManyToManyField(User, blank=True, related_name="watchlist")
+    highest_bid = models.DecimalField(max_digits=10, decimal_places=2, blank=True, default=0)
 
     def __str__(self):
         return f"{self.title} - {self.starting_bid}"
