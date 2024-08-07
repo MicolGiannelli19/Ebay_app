@@ -42,9 +42,12 @@ class BidForm(forms.ModelForm):
     }
 
 class ListingForm(forms.ModelForm):
+
     # TODO: Check If you need to make changes to the form type once I fixed this
     class Meta:
+
         model = Listing
+
         fields = [
             "title",
             "description",
@@ -52,6 +55,7 @@ class ListingForm(forms.ModelForm):
             "image",
             "category",
         ]
+
     def __str__():
         return self.title
 
@@ -185,11 +189,15 @@ def watchlist(request, listing_id):
 
 @login_required()
 def bid(request, listing_id):
+
     if request.method == "POST":
         form = BidForm(request.POST)
+
         if form.is_valid():
+
             amount = form.cleaned_data["amount"]
             user = request.user
+
             listing = Listing.objects.get(id=listing_id)
             if listing.bids.all().count() > 0:
                 current_bid = listing.bids.all().last().amount
@@ -202,6 +210,7 @@ def bid(request, listing_id):
                 return HttpResponseRedirect(
                     new_url + "?message=" + "Bid added"
                 )
+            
     return HttpResponseRedirect(
         reverse("listing", args=(listing_id,)) + "?message=Invalid request"
     )
@@ -245,6 +254,7 @@ def new_listing(request):
                 category=category,
                 user=user,
                 active=True,
+                highest_bid = starting_bid
             )
             listing.save()
             return HttpResponseRedirect(reverse("index"))

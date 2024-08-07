@@ -5,7 +5,7 @@
 <div>{{ message }}</div>
 {% endif %}
 
-<div class="row-container">
+<!-- <div class="container">
   {%for element in listings%} {%if element.active%}
   <div class="listing-element-small">
 
@@ -13,15 +13,18 @@
     <img src="{{element.image}}" alt="picture of {{elemnt.title}}" />
   </div>
   {%endif%} {%endfor%}
-</div>
+</div> -->
 
-<ul>
+<ul class="active-listings">
   {% for listing in listings %} {% if listing.active %}
-  
-  <li>
+
+  <li class="active-listing">
     <h2><a href="{% url 'listing' listing.id%}">{{listing.title}} </a></h2>
     <p>{{listing.description}}</p>
-    <p>Starting bid: £{{listing.starting_bid}}</p>
+    <br/>
+    
+    <p>Current price bid: £{{highest_bid.amount}}</p>
+    <img src="{{listing.image}}" alt="picture of {{listing.title}}" />
   </li>
 
   {% endif %} {% endfor %}
