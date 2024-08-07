@@ -124,11 +124,29 @@ def index(request):
     )
 
 def categories(request):
-    message = request.GET.get("message", "")
+    
+    # TODO: find out if you need this for anything 
+
+    # message = request.GET.get("message", "") 
+
+    possible_categories = Listing.objects.values_list('category', flat=True).distinct()  
     return render(
         request,
         "auctions/categories.html",
-        {"listings": Listing.objects.all(), "message": message},
+        {"categories": possible_categories, "listings": None},
+    )
+
+def display_catagory(request, category):
+
+    possible_categories = Listing.objects.values_list('category', flat=True).distinct()
+    # TODO: select from items
+
+    listings = Listing.objects.filter(category=category)
+
+    return render(
+        request,
+        "auctions/categories.html",
+        {"categories": possible_categories, "listings": listings, "category":category},
     )
 
 def listing(request, listing_id):
@@ -147,8 +165,6 @@ def listing(request, listing_id):
             "bid_form": BidForm(),
         },
     )
-
-
 
 # Actions that can be Made to a listing
 

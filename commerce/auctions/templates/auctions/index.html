@@ -8,6 +8,7 @@
 <div class="row-container">
   {%for element in listings%} {%if element.active%}
   <div class="listing-element-small">
+
     <h2><a href="{% url 'listing' element.id%}">{{element.title}}</a></h2>
     <img src="{{element.image}}" alt="picture of {{elemnt.title}}" />
   </div>
@@ -16,12 +17,15 @@
 
 <ul>
   {% for listing in listings %} {% if listing.active %}
+  
   <li>
     <h2><a href="{% url 'listing' listing.id%}">{{listing.title}} </a></h2>
     <p>{{listing.description}}</p>
     <p>Starting bid: £{{listing.starting_bid}}</p>
   </li>
+
   {% endif %} {% endfor %}
 </ul>
+
 <a href="{%url 'new_listing'%}">Add New Listing</a>
 {% endblock %}

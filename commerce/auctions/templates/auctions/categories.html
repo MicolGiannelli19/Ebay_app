@@ -2,26 +2,32 @@
 
 {% block body %}
 
-<h2> Categories</h2>
-
-
-{% if message %}
-<div>{{ message }}</div>
+{% if category %}
+<h1>Active {{category}} listings</h1>
 {% endif %}
 
- <h1>This should loop through the categories rather then the listings YOU can retrieve these in the view</h1>
-<h2>Altrenativly these could be a radio button</h2>
+
 <ul>
   {% for listing in listings %} 
   
   {% if listing.active %}
   <li>
-    <h2><a href="{% url 'listing' 1 %}"> "ADD IN CATAGORY NAME"</a></h2>
+    <h2><a href="{% url 'listing' listing.id%}">{{listing.title}} </a></h2>
+    <p>{{listing.description}}</p>
+    <p>Starting bid: £{{listing.starting_bid}}</p>
   </li>
   {% endif %}
   {% endfor %}
 </ul>
 
-<!-- -->
+<h2> Categories </h2>
+<ul>
+  {% for category in categories %} 
+  <li>
+    <h2><a href="{% url 'category' category%}">{{category}}</a></h2>
+  </li>
+  {% endfor %}
+</ul>
+
 
 {% endblock %}
